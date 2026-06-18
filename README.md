@@ -1,2 +1,4 @@
 # flexdepth
-[Official PyTorch Implementation] Code for the paper: FlexDepth: A Flexible Scale-Driven Model Family for Self-Supervised Monocular Depth Estimation
+ Code for the paper: Towards Robust Driving Perception: A Flexible Scale-Driven Family for Self-Supervised Monocular Depth Estimation
+ 
+ 
