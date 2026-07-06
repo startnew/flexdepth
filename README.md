@@ -5,6 +5,7 @@
 [![ECCV 2026](https://img.shields.io/badge/ECCV-2026-4F70F2?style=flat-square)](https://eccv.ecva.net/)
 [![arXiv](https://img.shields.io/badge/arXiv-2607.00736-b31b1b?style=flat-square)](https://arxiv.org/abs/2607.00736)
 [![Project Page](https://img.shields.io/badge/Project-Page-4F70F2?style=flat-square)](https://startnew.github.io/projects/flexdepth/)
+![visitors](https://laobi.icu/badge?page_id=startnew.flexdepth)
 
 
 ---
