@@ -276,7 +276,7 @@ python evaluate_depth.py --eval_mono --scale 4 \
     --data_path <cityscapes_path> --split_path <splits_path>
 ```
 
-**Results on Cityscapes (center crop 50%):**
+**Results on Cityscapes (During evaluation, crop follow manydepth,dynamic depth etc.):**
 
 | Model | Params | GFLOPs | Abs Rel ↓ | Sq Rel ↓ | RMSE ↓ | RMSE log ↓ | δ<1.25 ↑ | δ<1.25² ↑ | δ<1.25³ ↑ |
 |-------|--------|--------|-----------|----------|--------|------------|----------|-----------|-----------|
