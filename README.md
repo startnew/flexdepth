@@ -309,7 +309,7 @@ models/
     └── flex_x/
 ```
 
-Weights will be available soon via [Google Drive](https://drive.google.com/drive/folders/1sOp04-zCwkC3JJN9gMbu2GbjUdAJfp6r?usp=sharing) / [HuggingFace](https://huggingface.co/StarNew/flexdepth).
+Weights  available  via [Google Drive](https://drive.google.com/drive/folders/1sOp04-zCwkC3JJN9gMbu2GbjUdAJfp6r?usp=sharing) / [HuggingFace](https://huggingface.co/StarNew/flexdepth).
 
 ### What is included in this repository
 
