@@ -146,28 +146,28 @@ python train.py --use_var_net --use_step_2 --num_epochs 30 --start_opt_epoch 29 
 ### Cityscapes
 
 ```bash
-# Flex-Nano
+# Flex-Nano (2080ti, lr=1e-4, bs=12)
 python train.py --dataset cityscapes_preprocessed --split cityscapes_preprocessed \
     --use_var_net --use_step_2 --num_epochs 30 --start_opt_epoch 29 --step_2_epoch 10 \
     --resume --scale 4 --optim NAdam --learning_rate 1e-4 \
     --encoder_model_type yolo11n-seg --decoder_model_type flexn --batch_size 12 \
     --height 192 --width 512 --dy_mu --data_path <cityscapes_path>
 
-# Flex-Small
+# Flex-Small (2080ti, lr=1e-4, bs=12)
 python train.py --dataset cityscapes_preprocessed --split cityscapes_preprocessed \
     --use_var_net --use_step_2 --num_epochs 30 --start_opt_epoch 29 --step_2_epoch 10 \
     --resume --scale 4 --optim NAdam --learning_rate 1e-4 \
     --encoder_model_type yolo11s-seg --decoder_model_type flexs --batch_size 12 \
     --height 192 --width 512 --dy_mu --data_path <cityscapes_path>
 
-# Flex-Medium
+# Flex-Medium (2080ti, lr=1e-4, bs=6)
 python train.py --dataset cityscapes_preprocessed --split cityscapes_preprocessed \
     --use_var_net --use_step_2 --num_epochs 30 --start_opt_epoch 29 --step_2_epoch 10 \
     --resume --scale 4 --optim NAdam --learning_rate 1e-4 \
     --encoder_model_type yolo11m-seg --decoder_model_type flexm --batch_size 6 \
     --height 192 --width 512 --dy_mu --png --data_path <cityscapes_path>
 
-# Flex-Large
+# Flex-Large (2080ti, lr=1e-4, bs=6)
 python train.py --dataset cityscapes_preprocessed --split cityscapes_preprocessed \
     --use_var_net --use_step_2 --num_epochs 30 --start_opt_epoch 29 --step_2_epoch 10 \
     --resume --scale 4 --optim NAdam --learning_rate 1e-4 \
