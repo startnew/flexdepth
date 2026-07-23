@@ -228,8 +228,12 @@ python evaluate_depth.py --png --eval_mono --scale 4 \
 | Flex-Large | 15.2M | 11.5 | 0.095 | 0.642 | 4.199 | 0.171 | 0.906 | 0.968 | 0.984 |
 | Flex-X-Large | 32.3M | 24.6 | **0.093** | **0.605** | **4.114** | **0.167** | **0.910** | **0.969** | **0.985** |
 
-### Comparison with Depth Anything 2 (Dense GT, Least-Squares Alignment)
+### Comparison with Depth Anything 2 (Eigen benchmark, Least-Squares Alignment)
 
+The improved Ground Truth  uses 5 consecutive frames with stereo completion to handle dynamic objects,covering 652 of 697 Eigen split test frames (93%) ,This split is usually called the KITTI Eigen benchmark split as monodepth2 introduce. benchmark labeled data from [official web](https://www.cvlibs.net/datasets/kitti/eval_depth.php?benchmark=depth_prediction) and follow [monodepth2](https://github.com/nianticlabs/monodepth2) sec. KITTI evaluation use prepare gt_depth.npz in ./splits/eigen_benchmark:
+```bash 
+python export_gt_depth.py --data_path kitti_data --split eigen_benchmark prepare
+```
 To compare with Depth Anything 2 and other zero-shot depth models, we evaluate Flex-X-Large on the KITTI Eigen benchmark split using **dense ground truth** with **least-squares alignment** (instead of the median scaling alignment used in the standard evaluation above). This aligns with the evaluation protocol used by DA2.
 
 First, generate the dense ground truth (following [Monodepth2](https://github.com/nianticlabs/monodepth2)):
