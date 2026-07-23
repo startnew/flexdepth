@@ -24,7 +24,7 @@
 - [Video Results](https://startnew.github.io/projects/flexdepth/#comparison)
 - [Google Drive](https://drive.google.com/drive/folders/1sOp04-zCwkC3JJN9gMbu2GbjUdAJfp6r?usp=sharing) / [HuggingFace](https://huggingface.co/StarNew/flexdepth) /[Baidu Netdisk](https://pan.baidu.com/s/1U5vtDhDr2WH3v6L6NeNKKA?pwd=zncb).
 
-
+## Table of Contents
 - [Installation](#installation)
 - [Prepare Datasets](#prepare-datasets)
   - [KITTI](#kitti)
@@ -35,7 +35,7 @@
   - [Cityscapes](#cityscapes-1)
 - [Evaluation](#evaluation)
   - [KITTI](#kitti-2)
-  - [Comparison with Depth Anything 2 (Dense GT, Least-Squares Alignment)](#comparison-with-depth-anything-2-dense-gt-least-squares-alignment)
+  - [Comparison with Depth Anything 2 (Dense GT eigen benchmark, Least-Squares Alignment)](#comparison-with-depth-anything-2-dense-gt-least-squares-alignment)
   - [Cityscapes](#cityscapes-2)
 - [Pretrained Models](#pretrained-models)
   - [What is included in this repository](#what-is-included-in-this-repository)
