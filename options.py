@@ -397,7 +397,7 @@ class FlexdepthOptions:
                                  )
 
         self.parser.add_argument("--use_wb",
-                                 help="use weight and bias ",
+                                 help="use wendb ",
                                  action="store_true")
 
 
