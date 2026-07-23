@@ -170,7 +170,7 @@ python train.py --dataset cityscapes_preprocessed --split cityscapes_preprocesse
 # Flex-Large (2080ti, lr=1e-4, bs=6)
 python train.py --dataset cityscapes_preprocessed --split cityscapes_preprocessed \
     --use_var_net --use_step_2 --num_epochs 30 --start_opt_epoch 29 --step_2_epoch 10 \
-    --resume --scale 4 --optim NAdam --learning_rate 1e-4 \
+    --resume --scale 4 --optim NAdam --learning_rate 5e-5 \
     --encoder_model_type yolo11l-seg --decoder_model_type flexl --batch_size 6 \
     --height 192 --width 512 --dy_mu --png --data_path <cityscapes_path>
 
