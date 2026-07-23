@@ -21,7 +21,7 @@
 - [Paper (arXiv)](https://arxiv.org/abs/2607.00736)
 - [Project Page](https://startnew.github.io/projects/flexdepth/)
 - [Video Results](https://startnew.github.io/projects/flexdepth/#comparison)
-- [Google Drive](https://drive.google.com/drive/folders/1sOp04-zCwkC3JJN9gMbu2GbjUdAJfp6r?usp=sharing) / [HuggingFace](https://huggingface.co/StarNew/flexdepth).
+- [Google Drive](https://drive.google.com/drive/folders/1sOp04-zCwkC3JJN9gMbu2GbjUdAJfp6r?usp=sharing) / [HuggingFace](https://huggingface.co/StarNew/flexdepth) /[Baidu Netdisk](https://pan.baidu.com/s/1U5vtDhDr2WH3v6L6NeNKKA?pwd=zncb).
 
 ## Installation
 
