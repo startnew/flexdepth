@@ -398,4 +398,4 @@ This work is supported by the National Natural Science Foundation of China under
 
 Our code is built upon [Monodepth2](https://github.com/nianticlabs/monodepth2), [Manydepth](https://github.com/nianticlabs/manydepth), and [Ultralytics](https://github.com/ultralytics/ultralytics).
 
-We thank [DynamicDepth](https://github.com/AutoAILab/DynamicDepth) for providing dynamic scene annotations on Cityscapes, [DiPE](https://github.com/HalleyJiang/DiPE/tree/main) for providing dynamic scene annotations on KITTI, and [DSI-training](https://github.com/zhangtian33/DSI-training) for the masking approach.
+We thank [DynamicDepth](https://github.com/AutoAILab/DynamicDepth) [DiPE](https://github.com/HalleyJiang/DiPE/tree/main) for providing dynamic scene annotations on the Cityscapes and KITTI test sets, respectively, which are used to evaluate model performance separately on dynamic and static regions, We also thank [DSI-training](https://github.com/zhangtian33/DSI-training) for providing the masking approach.
