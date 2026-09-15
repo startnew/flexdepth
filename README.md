@@ -381,14 +381,17 @@ python export_onnx.py --encoder_model_type yolo11x-seg --decoder_model_type flex
 ## Citation
 
 ```bibtex
-@misc{zhu2026robustdrivingperceptionflexible,
+@InProceedings{flexdepth,
+  author={Zhu, Zhaowen and Zhang, Li and Chen, Yujie and Zhang, Tian and Wang, Yingjie and Zhan, Mingxia},
+  editor={Favaro, Paolo and Kukelova, Zuzana and Maki, Atsuto and Rohrbach, Anna and Schindler, Konrad and Tombari, Federico},
   title={Towards Robust Driving Perception: A Flexible Scale-Driven Family for Self-Supervised Monocular Depth Estimation},
-  author={Zhaowen Zhu and Li Zhang and Yujie Chen and Tian Zhang and Yingjie Wang and Mingxia Zhan},
+  booktitle={Computer Vision -- ECCV 2026},
   year={2026},
-  eprint={2607.00736},
-  archivePrefix={arXiv},
-  primaryClass={cs.CV},
-  url={https://arxiv.org/abs/2607.00736}
+  publisher={Springer Nature Switzerland},
+  address={Cham},
+  pages={110--129},
+  isbn={978-3-032-36846-1},
+  doi={10.1007/978-3-032-36846-1_7}
 }
 ```
 
