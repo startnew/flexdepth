@@ -2,7 +2,7 @@
 
 **Towards Robust Driving Perception: A Flexible Scale-Driven Family for Self-Supervised Monocular Depth Estimation**
 
-[![ECCV 2026](https://img.shields.io/badge/ECCV-2026-4F70F2?style=flat-square)](https://eccv.ecva.net/)
+[![ECCV 2026](https://img.shields.io/badge/ECCV-2026-4F70F2?style=flat-square)](https://link.springer.com/chapter/10.1007/978-3-032-36846-1_7)
 [![arXiv](https://img.shields.io/badge/arXiv-2607.00736-b31b1b?style=flat-square)](https://arxiv.org/abs/2607.00736)
 [![Project Page](https://img.shields.io/badge/Project-Page-4F70F2?style=flat-square)](https://startnew.github.io/projects/flexdepth/)
 ![Visitors](https://api.visitorbadge.io/api/visitors?path=startnew.flexdepth&label=Visitors&countColor=%23263759&style=flat-square)
