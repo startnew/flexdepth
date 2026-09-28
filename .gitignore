@@ -27,9 +27,7 @@ wheels/
 models/
 checkpoints/
 
-# Training code (will be released later)
-train.py
-trainer.py
+# Training eval code (train already release)
 eval_batch_cs.py
 find_best_weight_from_log.py
 
