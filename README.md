@@ -30,16 +30,15 @@
   - [KITTI](#kitti)
   - [Cityscapes](#cityscapes)
   - [Pretrained YOLO11 Weights](#pretrained-yolo11-weights)
-- [Training](#training)
-  - [KITTI](#kitti-1)
+- [Documentation](#documentation)
+  - [Training](docs/train.md)
+  - [Inference](docs/inference.md)
+  - [Evaluation](docs/eval.md)
+  - [ONNX Export](docs/onnx.md)
+- [Results](#results)
+  - [Comparison with Depth Anything 2 (Eigen benchmark, Least-Squares Alignment)](#comparison-with-depth-anything-2-eigen-benchmark-least-squares-alignment)
   - [Cityscapes](#cityscapes-1)
-- [Evaluation](#evaluation)
-  - [KITTI](#kitti-2)
-  - [Comparison with Depth Anything 2 (Dense GT eigen benchmark, Least-Squares Alignment)](#comparison-with-depth-anything-2-dense-gt-least-squares-alignment)
-  - [Cityscapes](#cityscapes-2)
 - [Pretrained Models](#pretrained-models)
-  - [What is included in this repository](#what-is-included-in-this-repository)
-- [ONNX Export](#onnx-export)
 - [Citation](#citation)
 - [Acknowledgment](#acknowledgment)
 
@@ -72,153 +71,22 @@ Follow [Manydepth](https://github.com/nianticlabs/manydepth) or [DynamicDepth](h
 
 ### Pretrained YOLO11 Weights
 
-Download YOLO11 segmentation pretrained weights from [Ultralytics](https://github.com/ultralytics/assets/releases/tag/v8.3.0) and place them in `./ckpt/`:
+The encoder is initialised from YOLO11 segmentation weights, which must be placed in `./ckpt/`. Download
+`yolo11{n,s,m,l,x}-seg.pt` from [Ultralytics v8.3.0](https://github.com/ultralytics/assets/releases/tag/v8.3.0) and
+match the file name to the scale you are training — see [Training](docs/train.md#prerequisites) for the full table.
 
-| Scale | Download |
-|-------|----------|
-| Nano | [yolo11n-seg.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11n-seg.pt) |
-| Small | [yolo11s-seg.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11s-seg.pt) |
-| Medium | [yolo11m-seg.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m-seg.pt) |
-| Large | [yolo11l-seg.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11l-seg.pt) |
-| X-Large | [yolo11x-seg.pt](https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11x-seg.pt) |
+## Documentation
 
-> **Tip:** Since the YOLO encoder structure remains unchanged from YOLO11 to YOLO26, you can also use YOLO26 COCO segmentation pretrained weights for encoder initialization, which may yield better results. Adjust hyperparameters accordingly.
+| Document | Contents |
+|----------|----------|
+| [Training](docs/train.md) | Training commands for all five scales (Nano / Small / Medium / Large / X-Large) on KITTI and Cityscapes, plus the split stage-1 / stage-2 recipe. |
+| [Inference](docs/inference.md) | Running a trained model on your own images, and reading the output. |
+| [Evaluation](docs/eval.md) | Evaluation commands and the full result tables for KITTI Eigen, KITTI Eigen benchmark (DA2 comparison), and Cityscapes. |
+| [ONNX Export](docs/onnx.md) | Exporting a trained model to ONNX. |
 
+## Results
 
-
-## Training
-
-> **Note:** Training code (`train.py`, `trainer.py`) is not included in this release but will be available soon. The commands below are provided for reference when the training code is released.
-
-### KITTI
-
-> **Note:** Our reported results were obtained with N/S/M/L models trained on an RTX 2080 Ti and X-Large on an RTX 4090. Adjust `--batch_size` according to your GPU memory.
-
-**Two-stage training in one command** (recommended):
-
-```bash
-# Flex-Nano (2080 Ti, lr=1e-4, bs=12)
-python train.py --use_var_net --use_step_2 --num_epochs 30 --start_opt_epoch 29 --step_2_epoch 20 \
-    --resume --scale 4 --optim NAdam --learning_rate 1e-4 \
-    --encoder_model_type yolo11n-seg --decoder_model_type flexn --batch_size 12 \
-    --height 192 --width 640 --dy_mu --png
-
-# Flex-Small (2080 Ti, lr=1e-4, bs=12)
-python train.py --use_var_net --use_step_2 --num_epochs 30 --start_opt_epoch 29 --step_2_epoch 20 \
-    --resume --scale 4 --optim NAdam --learning_rate 1e-4 \
-    --encoder_model_type yolo11s-seg --decoder_model_type flexs --batch_size 12 \
-    --height 192 --width 640 --dy_mu --png
-
-# Flex-Medium (2080 Ti, lr=5e-5, bs=6)
-python train.py --use_var_net --use_step_2 --num_epochs 30 --start_opt_epoch 29 --step_2_epoch 20 \
-    --resume --scale 4 --optim NAdam --learning_rate 5e-5 \
-    --encoder_model_type yolo11m-seg --decoder_model_type flexm --batch_size 6 \
-    --height 192 --width 640 --dy_mu --png
-
-# Flex-Large (2080 Ti, lr=5e-5, bs=6)
-python train.py --use_var_net --use_step_2 --num_epochs 30 --start_opt_epoch 29 --step_2_epoch 20 \
-    --resume --scale 4 --optim NAdam --learning_rate 5e-5 \
-    --encoder_model_type yolo11l-seg --decoder_model_type flexl --batch_size 6 \
-    --height 192 --width 640 --dy_mu --png
-
-# Flex-X-Large (4090, lr=5e-5, bs=12)
-python train.py --use_var_net --use_step_2 --num_epochs 30 --start_opt_epoch 29 --step_2_epoch 20 \
-    --resume --scale 4 --optim NAdam --learning_rate 5e-5 \
-    --encoder_model_type yolo11x-seg --decoder_model_type flexx --batch_size 12 \
-    --height 192 --width 640 --dy_mu --png
-```
-
-**Or train two stages separately:**
-
-```bash
-# Stage 1 only (example: Flex-X-Large)
-python train.py --num_epochs 30 --resume --scale 4 --optim NAdam \
-    --learning_rate 5e-5 --encoder_model_type yolo11x-seg --decoder_model_type flexx \
-    --batch_size 12 --height 192 --width 640 --dy_mu --png
-
-# Stage 2 only (skip stage 1)
-python train.py --use_var_net --use_step_2 --num_epochs 30 --start_opt_epoch 29 --step_2_epoch 20 \
-    --resume --scale 4 --optim NAdam --learning_rate 5e-5 \
-    --encoder_model_type yolo11x-seg --decoder_model_type flexx --batch_size 12 \
-    --height 192 --width 640 --dy_mu --png --skip_step1
-```
-
-### Cityscapes
-
-```bash
-# Flex-Nano (2080ti, lr=1e-4, bs=12)
-python train.py --dataset cityscapes_preprocessed --split cityscapes_preprocessed \
-    --use_var_net --use_step_2 --num_epochs 30 --start_opt_epoch 29 --step_2_epoch 10 \
-    --resume --scale 4 --optim NAdam --learning_rate 1e-4 \
-    --encoder_model_type yolo11n-seg --decoder_model_type flexn --batch_size 12 \
-    --height 192 --width 512 --dy_mu --data_path <cityscapes_path>
-
-# Flex-Small (2080ti, lr=1e-4, bs=12)
-python train.py --dataset cityscapes_preprocessed --split cityscapes_preprocessed \
-    --use_var_net --use_step_2 --num_epochs 30 --start_opt_epoch 29 --step_2_epoch 10 \
-    --resume --scale 4 --optim NAdam --learning_rate 1e-4 \
-    --encoder_model_type yolo11s-seg --decoder_model_type flexs --batch_size 12 \
-    --height 192 --width 512 --dy_mu --data_path <cityscapes_path>
-
-# Flex-Medium (2080ti, lr=1e-4, bs=6)
-python train.py --dataset cityscapes_preprocessed --split cityscapes_preprocessed \
-    --use_var_net --use_step_2 --num_epochs 30 --start_opt_epoch 29 --step_2_epoch 10 \
-    --resume --scale 4 --optim NAdam --learning_rate 1e-4 \
-    --encoder_model_type yolo11m-seg --decoder_model_type flexm --batch_size 6 \
-    --height 192 --width 512 --dy_mu --png --data_path <cityscapes_path>
-
-# Flex-Large (2080ti, lr=1e-4, bs=6)
-python train.py --dataset cityscapes_preprocessed --split cityscapes_preprocessed \
-    --use_var_net --use_step_2 --num_epochs 30 --start_opt_epoch 29 --step_2_epoch 10 \
-    --resume --scale 4 --optim NAdam --learning_rate 5e-5 \
-    --encoder_model_type yolo11l-seg --decoder_model_type flexl --batch_size 6 \
-    --height 192 --width 512 --dy_mu --png --data_path <cityscapes_path>
-
-# Flex-X-Large
-python train.py --dataset cityscapes_preprocessed --split cityscapes_preprocessed \
-    --use_var_net --use_step_2 --num_epochs 30 --start_opt_epoch 29 --step_2_epoch 10 \
-    --resume --scale 4 --optim NAdam --learning_rate 5e-5 \
-    --encoder_model_type yolo11x-seg --decoder_model_type flexx --batch_size 6 \
-    --height 192 --width 512 --dy_mu --png --data_path <cityscapes_path>
-```
-
-## Evaluation
-
-### KITTI
-
-```bash
-# Flex-Nano
-python evaluate_depth.py --png --eval_mono --scale 4 \
-    --encoder_model_type yolo11n-seg --decoder_model_type flexn \
-    --load_weights_folder ./models/kitti/flex_n \
-    --data_path <kitti_data_path> --split_path <splits_path>
-
-# Flex-Small
-python evaluate_depth.py --png --eval_mono --scale 4 \
-    --encoder_model_type yolo11s-seg --decoder_model_type flexs \
-    --load_weights_folder ./models/kitti/flex_s \
-    --data_path <kitti_data_path> --split_path <splits_path>
-
-# Flex-Medium
-python evaluate_depth.py --png --eval_mono --scale 4 \
-    --encoder_model_type yolo11m-seg --decoder_model_type flexm \
-    --load_weights_folder ./models/kitti/flex_m \
-    --data_path <kitti_data_path> --split_path <splits_path>
-
-# Flex-Large
-python evaluate_depth.py --png --eval_mono --scale 4 \
-    --encoder_model_type yolo11l-seg --decoder_model_type flexl \
-    --load_weights_folder ./models/kitti/flex_l \
-    --data_path <kitti_data_path> --split_path <splits_path>
-
-# Flex-X-Large
-python evaluate_depth.py --png --eval_mono --scale 4 \
-    --encoder_model_type yolo11x-seg --decoder_model_type flexx \
-    --load_weights_folder ./models/kitti/flex_x \
-    --data_path <kitti_data_path> --split_path <splits_path>
-```
-
-**Results on KITTI Eigen split (Cap 80m):**
+**KITTI Eigen split (Cap 80m):**
 
 | Model | Params | GFLOPs | Abs Rel ↓ | Sq Rel ↓ | RMSE ↓ | RMSE log ↓ | δ<1.25 ↑ | δ<1.25² ↑ | δ<1.25³ ↑ |
 |-------|--------|--------|-----------|----------|--------|------------|----------|-----------|-----------|
@@ -228,29 +96,13 @@ python evaluate_depth.py --png --eval_mono --scale 4 \
 | Flex-Large | 15.2M | 11.5 | 0.095 | 0.642 | 4.199 | 0.171 | 0.906 | 0.968 | 0.984 |
 | Flex-X-Large | 32.3M | 24.6 | **0.093** | **0.605** | **4.114** | **0.167** | **0.910** | **0.969** | **0.985** |
 
+For the evaluation commands and the full protocol, see [Evaluation](docs/eval.md).
+
 ### Comparison with Depth Anything 2 (Eigen benchmark, Least-Squares Alignment)
 
 The improved Ground Truth  uses 5 consecutive frames with stereo completion to handle dynamic objects,covering 652 of 697 Eigen split test frames (93%) ,This split is usually called the KITTI Eigen benchmark split as monodepth2 introduce. benchmark labeled data from [official web](https://www.cvlibs.net/datasets/kitti/eval_depth.php?benchmark=depth_prediction) and follow [monodepth2](https://github.com/nianticlabs/monodepth2) sec. KITTI evaluation use prepare gt_depth.npz in ./splits/eigen_benchmark:
-```bash 
-python export_gt_depth.py --data_path kitti_data --split eigen_benchmark prepare
-```
-To compare with Depth Anything 2 and other zero-shot depth models, we evaluate Flex-X-Large on the KITTI Eigen benchmark split using **dense ground truth** with **least-squares alignment** (instead of the median scaling alignment used in the standard evaluation above). This aligns with the evaluation protocol used by DA2.
 
-First, generate the dense ground truth (following [Monodepth2](https://github.com/nianticlabs/monodepth2)):
-
-```bash
-python export_gt_depth.py --data_path <kitti_data_path> --split eigen_benchmark
-```
-
-Then evaluate:
-
-```bash
-python evaluate_depth.py --png --eval_mono --scale 4 \
-    --encoder_model_type yolo11x-seg --decoder_model_type flexx \
-    --load_weights_folder ./models/kitti/flex_x \
-    --data_path <kitti_data_path> --split_path <splits_path> \
-    --eval_split eigen_benchmark --use_lstsq_alignment
-```
+To compare with Depth Anything 2 and other zero-shot depth models, we evaluate Flex-X-Large on the KITTI Eigen benchmark split using **dense ground truth** with **least-squares alignment** (instead of the median scaling alignment used in the standard evaluation above). This aligns with the evaluation protocol used by DA2. The commands to generate the dense ground truth and run this evaluation are in [Evaluation](docs/eval.md#comparison-with-depth-anything-2-eigen-benchmark-least-squares-alignment).
 
 **Results on KITTI Eigen benchmark (Dense GT, Least-Squares Alignment):**
 
@@ -263,43 +115,6 @@ python evaluate_depth.py --png --eval_mono --scale 4 \
 | Flex-X-Large (Ours) | Self-Supervised | 32M | 25 | 640×192 | **0.063** | 0.952 |
 
 ### Cityscapes
-
-```bash
-# Flex-Nano
-python evaluate_depth.py --eval_mono --scale 4 \
-    --dataset cityscapes_preprocessed --eval_split cityscapes \
-    --encoder_model_type yolo11n-seg --decoder_model_type flexn \
-    --load_weights_folder ./models/cs/flex_n \
-    --data_path <cityscapes_path> --split_path <splits_path>
-
-# Flex-Small
-python evaluate_depth.py --eval_mono --scale 4 \
-    --dataset cityscapes_preprocessed --eval_split cityscapes \
-    --encoder_model_type yolo11s-seg --decoder_model_type flexs \
-    --load_weights_folder ./models/cs/flex_s \
-    --data_path <cityscapes_path> --split_path <splits_path>
-
-# Flex-Medium
-python evaluate_depth.py --eval_mono --scale 4 \
-    --dataset cityscapes_preprocessed --eval_split cityscapes \
-    --encoder_model_type yolo11m-seg --decoder_model_type flexm \
-    --load_weights_folder ./models/cs/flex_m \
-    --data_path <cityscapes_path> --split_path <splits_path>
-
-# Flex-Large
-python evaluate_depth.py --eval_mono --scale 4 \
-    --dataset cityscapes_preprocessed --eval_split cityscapes \
-    --encoder_model_type yolo11l-seg --decoder_model_type flexl \
-    --load_weights_folder ./models/cs/flex_l \
-    --data_path <cityscapes_path> --split_path <splits_path>
-
-# Flex-X-Large
-python evaluate_depth.py --eval_mono --scale 4 \
-    --dataset cityscapes_preprocessed --eval_split cityscapes \
-    --encoder_model_type yolo11x-seg --decoder_model_type flexx \
-    --load_weights_folder ./models/cs/flex_x \
-    --data_path <cityscapes_path> --split_path <splits_path>
-```
 
 **Results on Cityscapes (During evaluation, crop follow manydepth,pro depth etc.):**
 
@@ -335,48 +150,6 @@ models/
 ```
 
 Weights  available  via [Google Drive](https://drive.google.com/drive/folders/1sOp04-zCwkC3JJN9gMbu2GbjUdAJfp6r?usp=sharing) / [HuggingFace](https://huggingface.co/StarNew/flexdepth).
-
-### What is included in this repository
-
-This repository contains only the source code, configuration files, and dataset split lists required to train, evaluate, and export the models:
-
-- Source code: `options.py`, `evaluate_depth.py`, `export_onnx.py`, `layers.py`, `utils.py`, `kitti_utils.py`, etc.
-- Network definitions: `networks/`, `layers.py`
-- Dataset loaders and splits: `datasets/`, `splits/`
-- YOLO encoder config: `cfg/models/yolo11-dep-encoder.yaml`
-- Utilities: `utils_add/`, `utils.py`, `kitti_utils.py`
-- Setup files: `requirements.txt`, `.gitignore`, `LICENSE`, `README.md`
-
-The following are **excluded** and must be downloaded separately:
-
-- KITTI / Cityscapes / Make3D datasets
-- YOLO11 pretrained weights (place under `./ckpt/`)
-- FlexDepth trained weights (place under `./models/`)
-- Training logs and exported ONNX files
-
-## ONNX Export
-
-```bash
-# Flex-Nano
-python export_onnx.py --encoder_model_type yolo11n-seg --decoder_model_type flexn \
-    --load_weights_folder ./models/kitti/flex_n --scales 4 --export_name flex-n
-
-# Flex-Small
-python export_onnx.py --encoder_model_type yolo11s-seg --decoder_model_type flexs \
-    --load_weights_folder ./models/kitti/flex_s --scales 4 --export_name flex-s
-
-# Flex-Medium
-python export_onnx.py --encoder_model_type yolo11m-seg --decoder_model_type flexm \
-    --load_weights_folder ./models/kitti/flex_m --scales 4 --export_name flex-m
-
-# Flex-Large
-python export_onnx.py --encoder_model_type yolo11l-seg --decoder_model_type flexl \
-    --load_weights_folder ./models/kitti/flex_l --scales 4 --export_name flex-l
-
-# Flex-X-Large
-python export_onnx.py --encoder_model_type yolo11x-seg --decoder_model_type flexx \
-    --load_weights_folder ./models/kitti/flex_x --scales 4 --export_name flex-x
-```
 
 ## Citation
 
