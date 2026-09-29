@@ -1,7 +1,7 @@
 
 # Training
 
-> **Note:** Training code (`train.py`, `trainer.py`) is not included in this release but will be available soon. The commands below are provided for reference when the training code is released.
+> ~~**Note:** Training code (`train.py`, `trainer.py`) is not included in this release but will be available soon. The commands below are provided for reference when the training code is released.~~
 
 ## Prerequisites
 
