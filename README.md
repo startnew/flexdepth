@@ -13,6 +13,7 @@
 
 ## News
 
+- **[2026-09]** Training code is now released — see [Training](docs/train.md).
 - **[2026-07]** Code is now available!
 - **[2026-07]** Project page is live at [startnew.github.io/projects/flexdepth](https://startnew.github.io/projects/flexdepth/)
 - **[2026-06]** Accepted by ECCV 2026
